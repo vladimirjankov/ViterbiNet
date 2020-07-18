@@ -6,3 +6,6 @@
 -----------------------------------
 """
 
+from model.viterbitnet import ViterbiNet
+
+netWork = ViterbiNet()

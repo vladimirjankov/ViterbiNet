@@ -5,8 +5,6 @@
 @date: 17.7.2020
 -----------------------------------
 """
-
-
 import numpy as np
 
 from abc import ABC, abstractmethod
@@ -24,17 +22,14 @@ class BaseModel(ABC):
 
 		# Training time.
         self._train_time = 0
-    
+
+    @abstractmethod    
     def compile_model(self):
         """
-		Configures the ConvNet model.
+		Configures the NeuralNetwork model.
 		:param none
 		:return none
-		:raises NotImplementedError: Implement this method.
 		"""
-
-		# Implement this method in the inherited class to configure the NeuralNetwork model.
-        raise NotImplementedError
 
     @abstractmethod
     def fit_model(self):
@@ -42,11 +37,7 @@ class BaseModel(ABC):
         Trains the NeuralNetwork model.
         :param none
         :return none
-        :raises NotImplementedError: Implement this method.
         """
-
-        # Implement this method in the inherited class to configure the NeuralNetwork model.
-        raise NotImplementedError
 
     @abstractmethod
     def evaluate_model(self):
@@ -54,11 +45,7 @@ class BaseModel(ABC):
         Evaluates the NeuralNetwork model.
         :param none
         :return none
-        :raises NotImplementedError: Implement this method.
         """
-
-        # Implement this method in the inherited class to evaluate the constructed NeuralNetwork model.
-        raise NotImplementedError
 
     def save_model(self, model_path):
         """
@@ -84,10 +71,10 @@ class BaseModel(ABC):
         """
 
         if( self._model is None ):
-        	raise Exception("ConvNet model not configured and trained !")
+        	raise Exception("NeuralNetwork model not configured and trained !")
 		
         self._model.load_weights( load_model )
-        print("ConvNet model loaded from the path: ", load_model, "\n")
+        print("NeuralNetwork model loaded from the path: ", load_model, "\n")
 
         return
 
