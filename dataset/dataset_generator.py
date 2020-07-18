@@ -8,7 +8,7 @@
 
 import numpy as np
 
-class DatasetGenerator(Object):
+class DatasetGenerator(object):
     """
     Class that generates dataset for ViterbiNet
     """
