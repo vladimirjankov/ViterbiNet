@@ -32,26 +32,29 @@ class DatasetGenerator(object):
        
         
     def generate_data(self):
-
-        self._fadding_channel = np.exp(self._exponent_decaying_channel_const * np.array([*range(0, self._channel_memory_length)]))
-        train_data = np.random.randint(MINNIMAL_VALUE_DATA, self._constellation_size + 1, 
-                                             self._training_size + self._channel_memory_length -1)
-        test_data = np.random.randint(MINNIMAL_VALUE_DATA, self._constellation_size + 1, 
-                                            self._test_size + self._channel_memory_length -1)
-        self._train_data = np.transpose(np.array(list(mit.windowed(train_data.ravel(),
-                                        n = self._channel_memory_length))))
-
-        self._test_data = np.transpose(np.array(list(mit.windowed(test_data.ravel(),
-                                        n = self._channel_memory_length))))
         
-        labels = 2 * (test_data - 0.5 * (self._constellation_size + 1))
+        self._fadding_channel = np.exp(self._exponent_decaying_channel_const * np.array([*range(0, self._channel_memory_length)]))
+        self._combine_vector = np.array([pow(2, step) for step in range(0,self._channel_memory_length)])
+        train_labels = np.random.randint(MINNIMAL_VALUE_DATA, self._constellation_size + 1, 
+                                         self._training_size + self._channel_memory_length -1)
+        test_labels = np.random.randint(MINNIMAL_VALUE_DATA, self._constellation_size + 1, 
+                                        self._test_size + self._channel_memory_length -1)
+        self._train_labels = np.matmul(self._combine_vector, (np.transpose(np.array(list(mit.windowed(train_labels.ravel(),
+                                       n = self._channel_memory_length)))) -1))
 
-        labels = np.transpose(np.array(list(mit.windowed(labels.ravel(),
-                                        n = self._channel_memory_length))))
+        
+        
+        self._test_labels =  np.matmul(self._combine_vector, (np.transpose(np.array(list(mit.windowed(test_labels.ravel(),
+                                       n = self._channel_memory_length)))) -1 ))
+        
+        data = 2 * (train_labels - 0.5 * (self._constellation_size + 1))
+
+        data = np.transpose(np.array(list(mit.windowed(data.ravel(),
+                            n = self._channel_memory_length))))
         #after deceying
-        labels = np.matmul(np.flip(self._fadding_channel,0), labels)
+        data = np.matmul(np.flip(self._fadding_channel,0), data)
         self._sigmaWdB = pow(10, -1 * self._snr / 10.0)
-        self._train_labels = labels + np.sqrt(self._sigmaWdB) * np.random.randn(labels.shape[0]) 
+        self._train_data = data + np.sqrt(self._sigmaWdB) * np.random.randn(data.shape[0]) 
         
 
     def get_train_data(self):
@@ -60,7 +63,7 @@ class DatasetGenerator(object):
         :param none
         :return training data
         """
-        return np.array([self._train_data.transpose()])
+        return self._train_data.reshape(5000,1,1)
 
     def get_train_labels(self):
         """
@@ -68,7 +71,7 @@ class DatasetGenerator(object):
         :param none
         :return training data
         """
-        return self._train_labels 
+        return self._train_labels
 
     def get_test_data(self):
         """
@@ -84,4 +87,4 @@ class DatasetGenerator(object):
         :param none
         :return test data
         """
-        return self._test_data
+        return self._test_labels
