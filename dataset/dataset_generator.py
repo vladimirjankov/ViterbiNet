@@ -32,6 +32,7 @@ class DatasetGenerator(object):
        
         
     def generate_data(self):
+
         self._fadding_channel = np.exp(self._exponent_decaying_channel_const * np.array([*range(0, self._channel_memory_length)]))
         train_data = np.random.randint(MINNIMAL_VALUE_DATA, self._constellation_size + 1, 
                                              self._training_size + self._channel_memory_length -1)
@@ -43,9 +44,15 @@ class DatasetGenerator(object):
         self._test_data = np.transpose(np.array(list(mit.windowed(test_data.ravel(),
                                         n = self._channel_memory_length))))
         
-        #self._test_labels =  
+        labels = 2 * (test_data - 0.5 * (self._constellation_size + 1))
+
+        labels = np.transpose(np.array(list(mit.windowed(labels.ravel(),
+                                        n = self._channel_memory_length))))
+        #after deceying
+        labels = np.matmul(np.flip(self._fadding_channel,0), labels)
+        self._sigmaWdB = pow(10, -1 * self._snr / 10.0)
+        self._train_labels = labels + np.sqrt(self._sigmaWdB) * np.random.randn(labels.shape[0]) 
         
-        pass
 
     def get_train_data(self):
         """
@@ -53,7 +60,7 @@ class DatasetGenerator(object):
         :param none
         :return training data
         """
-        return self._train_data
+        return np.array([self._train_data.transpose()])
 
     def get_train_labels(self):
         """
