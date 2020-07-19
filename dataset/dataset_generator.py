@@ -7,21 +7,44 @@
 """
 
 import numpy as np
+import more_itertools as mit
+
+MINNIMAL_VALUE_DATA = 1
 
 class DatasetGenerator(object):
     """
     Class that generates dataset for ViterbiNet
     """
 
-    def __init(self,training_size ,test_size):
+    def __init__(self,training_size ,test_size, constellation_size, snr, 
+               exponent_decaying_channel_const, channel_memory_length):
         self._train_data = None
         self._train_labels = None
         self._test_data = None
         self._test_labels = None
+        self._fadding_channel = None
         self._training_size = training_size
         self._test_size = test_size
+        self._constellation_size = constellation_size
+        self._snr = snr
+        self._exponent_decaying_channel_const = exponent_decaying_channel_const
+        self._channel_memory_length = channel_memory_length
+       
         
-    def generate_data():
+    def generate_data(self):
+        self._fadding_channel = np.exp(self._exponent_decaying_channel_const * np.array([*range(0, self._channel_memory_length)]))
+        train_data = np.random.randint(MINNIMAL_VALUE_DATA, self._constellation_size + 1, 
+                                             self._training_size + self._channel_memory_length -1)
+        test_data = np.random.randint(MINNIMAL_VALUE_DATA, self._constellation_size + 1, 
+                                            self._test_size + self._channel_memory_length -1)
+        self._train_data = np.transpose(np.array(list(mit.windowed(train_data.ravel(),
+                                        n = self._channel_memory_length))))
+
+        self._test_data = np.transpose(np.array(list(mit.windowed(test_data.ravel(),
+                                        n = self._channel_memory_length))))
+        
+        #self._test_labels =  
+        
         pass
 
     def get_train_data(self):

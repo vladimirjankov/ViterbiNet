@@ -55,7 +55,7 @@ class BaseModel(ABC):
         """
 
         if( self._model is None ):
-        	raise Exception("ConvNet model not configured and trained !")
+        	raise Exception("NeuralNetwork model not configured and trained !")
 		
         self._model.save(model_path)
         print("NeuralNetwork model saved at path: ", model_path, "\n")

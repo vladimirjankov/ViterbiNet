@@ -8,7 +8,7 @@
 from base_model import BaseModel
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, LSTM, InputLayer, ReLU, Softmax
-
+from model.base_model import BaseModel
 NUMBER_OF_HIDDEN_UNITS = 100
 
 class ViterbiNet(BaseModel):
