@@ -8,6 +8,7 @@
 
 import numpy as np
 import more_itertools as mit
+from keras.utils import to_categorical
 
 MINNIMAL_VALUE_DATA = 1
 
@@ -63,7 +64,7 @@ class DatasetGenerator(object):
         :param none
         :return training data
         """
-        return self._train_data.reshape(5000,1,1)
+        return self._train_data #.reshape(5000,1,1)
 
     def get_train_labels(self):
         """
@@ -71,7 +72,7 @@ class DatasetGenerator(object):
         :param none
         :return training data
         """
-        return self._train_labels
+        return (self._train_labels)
 
     def get_test_data(self):
         """

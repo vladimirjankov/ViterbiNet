@@ -50,7 +50,8 @@ class ViterbiNet(BaseModel):
         print(self._dataset.get_train_data().shape)
         print(self._dataset.get_train_labels())
         #
-        self._model.add(LSTM(self._number_of_hidden_units, input_shape=(1,1), return_sequences=False))
+        #self._model.add(LSTM(self._number_of_hidden_units, input_shape=(1,1), return_sequences=False))
+        self._model.add(InputLayer(input_shape=(1,)))
         self._model.add(Dense(100, activation='sigmoid'))
         self._model.add(Dense(50, activation='sigmoid'))
         self._model.add(Dense(len(np.unique(self._dataset.get_train_labels())), activation='softmax'))
@@ -84,3 +85,14 @@ class ViterbiNet(BaseModel):
         end_time = time.time()
         self._train_time = end_time - start_time
         print("Training of ViterbitNet done")
+    
+    def predict(self, data_vector):
+        """
+        Predicts class of data_vector
+        :param data_vector
+        :return vector of classes 
+        """        
+        return self._model.predict(data_vector)
+
+
+
