@@ -18,7 +18,7 @@ class DatasetGenerator(object):
     """
 
     def __init__(self,training_size ,test_size, constellation_size, snr, 
-               exponent_decaying_channel_const, channel_memory_length):
+                 exponent_decaying_channel_const, channel_memory_length):
         self._train_data = None
         self._train_labels = None
         self._test_data = None
@@ -30,8 +30,7 @@ class DatasetGenerator(object):
         self._snr = snr
         self._exponent_decaying_channel_const = exponent_decaying_channel_const
         self._channel_memory_length = channel_memory_length
-       
-        
+
     def generate_data(self):
         
         self._fadding_channel = np.exp(self._exponent_decaying_channel_const * np.array([*range(0, self._channel_memory_length)]))
@@ -97,3 +96,44 @@ class DatasetGenerator(object):
         :return test data
         """
         return self._test_labels
+
+    def get_snr(self):
+        """
+        Returns snr
+        :param: none
+        :return snr
+        """
+        return self._snr
+
+    def get_exponent_decaying_channel_const(self):
+        """
+        Returns exponent decaying channel const
+        :param: none
+        :return exponent decaying channel const
+        """
+        return self._exponent_decaying_channel_const
+
+    def get_channel_memory_length(self):
+        """
+        Returns channel memory
+        :param: none
+        :return: channel memory length
+        """
+        return self._channel_memory_length    
+
+    def get_constellation_size(self):
+        """
+        Return constellation size
+        :param: none
+        :return: constellation size
+        """
+        return self._constellation_size
+
+    def get_fadding_channel(self):
+        """
+        Return fadding channel
+        :param: none
+        :return: fadding channel
+        """
+        return self._channel_memory_length     
+

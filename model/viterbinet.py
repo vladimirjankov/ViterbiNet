@@ -46,6 +46,8 @@ class ViterbiNet(BaseModel):
         """
         Sets the ViterbiNet arhitecture.
         1 x 100 , 100 x 50, 50 x num
+        :param none
+        :return none
 
         """
         print(self._dataset.get_train_data().shape)
