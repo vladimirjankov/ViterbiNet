@@ -14,6 +14,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, LSTM, InputLayer, ReLU, Softmax
 from model.base_model import BaseModel
 
+NUMBER_OF_HIDDEN_UNITS = 100
 
 class ViterbiNet(BaseModel):
 
@@ -22,11 +23,11 @@ class ViterbiNet(BaseModel):
         super().__init__(dataset)
         self._constellation_size = constellation_size
         self._channel_memory_length = channel_memory_length
-        self._number_of_classes = self._constellation_size * self._channel_memory_length
+        self._number_of_classes = pow(self._constellation_size, self._channel_memory_length)
         self._batch_size = batch_size
         self._epochs = epochs
         self._learning_rate = learning_rate
-        self._number_of_hidden_units = 100
+        self._number_of_hidden_units = NUMBER_OF_HIDDEN_UNITS
 
     def evaluate_model(self):
         """
@@ -53,8 +54,8 @@ class ViterbiNet(BaseModel):
         #self._model.add(LSTM(self._number_of_hidden_units, input_shape=(1,1), return_sequences=False))
         self._model.add(InputLayer(input_shape=(1,)))
         self._model.add(Dense(100, activation='sigmoid'))
-        self._model.add(Dense(50, activation='sigmoid'))
-        self._model.add(Dense(len(np.unique(self._dataset.get_train_labels())), activation='softmax'))
+        self._model.add(Dense(50, activation='relu'))
+        self._model.add(Dense(self._number_of_classes, activation='softmax'))
 
     
     def compile_model(self):
@@ -63,7 +64,7 @@ class ViterbiNet(BaseModel):
 		:param none
 		:return none
 		"""
-        self.define_sequential_model()#
+        self.define_sequential_model()
         self._model.compile(loss='sparse_categorical_crossentropy',optimizer=tf.train.AdamOptimizer(learning_rate=0.01),metrics=['accuracy'])
 
     def fit_model(self):

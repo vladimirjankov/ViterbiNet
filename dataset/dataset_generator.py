@@ -57,6 +57,14 @@ class DatasetGenerator(object):
         self._sigmaWdB = pow(10, -1 * self._snr / 10.0)
         self._train_data = data + np.sqrt(self._sigmaWdB) * np.random.randn(data.shape[0]) 
         
+        data = 2 * (test_labels - 0.5 * (self._constellation_size + 1))
+        data = np.transpose(np.array(list(mit.windowed(data.ravel(),
+                            n = self._channel_memory_length))))
+        #after deceying
+        data = np.matmul(np.flip(self._fadding_channel,0), data)
+        self._sigmaWdB = pow(10, -1 * self._snr / 10.0)
+        self._test_data = data + np.sqrt(self._sigmaWdB) * np.random.randn(data.shape[0]) 
+        
 
     def get_train_data(self):
         """
@@ -64,7 +72,7 @@ class DatasetGenerator(object):
         :param none
         :return training data
         """
-        return self._train_data #.reshape(5000,1,1)
+        return self._train_data 
 
     def get_train_labels(self):
         """
