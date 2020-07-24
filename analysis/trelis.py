@@ -68,15 +68,3 @@ class Trelis(object):
 
         return output.astype(int)
 
-
-
-
-""""
-Ako imam i forward i backward passing 
-forward : gledaj logicki 1111-0000 nije moguce
-backward : matricu za forward transponuj :D
-"""
-
-        
-        
-

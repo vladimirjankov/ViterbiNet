@@ -53,15 +53,6 @@ class DatasetGenerator(object):
         self._test_labels = np.random.randint(MINNIMAL_VALUE_DATA, self._constellation_size + 1, 
                                         self._test_size)
         
-        """
-        self._train_labels = np.matmul(self._combine_vector, (np.transpose(np.array(list(mit.windowed(train_labels.ravel(),
-                                       n = self._channel_memory_length)))) -1))
-
-        
-        
-        self._test_labels =  np.matmul(self._combine_vector, (np.transpose(np.array(list(mit.windowed(test_labels.ravel(),
-                                       n = self._channel_memory_length)))) -1 ))
-        """
         data = 2 * (self._train_labels - 0.5 * (self._constellation_size + 1))
         data = self.reshape_data(data, self._channel_memory_length)
         
