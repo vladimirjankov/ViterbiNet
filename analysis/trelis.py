@@ -66,7 +66,7 @@ class Trelis(object):
             index = np.where(states == np.min(states))[0]
             output[data_point_index] = np.mod(index[0],constellation_size) + 1
 
-        return output
+        return output.astype(int)
 
 
 

@@ -16,8 +16,8 @@ from dataset.dataset_generator import DatasetGenerator
 training_size = 5000 
 test_size = 100000
 constellation_size = 2
-snr = 25 # in figure 7. 10:~40
-exponent_decaying_channel_const = 0.2 # just like in figure 7
+snr = 10 
+exponent_decaying_channel_const = 0.8 
 channel_memory_length = 4 
 batch_size = 25
 epochs = 100
@@ -36,6 +36,8 @@ viterbi_with_gmm.fit()
 trelis = Trelis(viterbi_with_gmm,dataset)
 symbol_predictons = trelis.apply_to_dataset()
 symbol_error_rate = np.mean(symbol_predictons != dataset.get_test_labels())
+symbol_predictons[0:10]
+dataset.get_test_labels()[0:10]
 print(symbol_error_rate)
 
 

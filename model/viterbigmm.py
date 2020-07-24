@@ -64,7 +64,7 @@ class ViterbiGMM(object):
         data = data.reshape(len(data),1)
         # Compute output PDF
         out_pdf = self._gaussian_model.predict_proba(data)
-        print(out_pdf)
+        print(likelyhood_function.shape)
 
         # ML-based log-likelihood computation
         y_likelyhood = np.multiply(likelyhood_function, out_pdf) * self._number_of_classes
